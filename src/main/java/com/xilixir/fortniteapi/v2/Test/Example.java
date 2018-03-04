@@ -1,5 +1,7 @@
 package com.xilixir.fortniteapi.v2.Test;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.xilixir.fortniteapi.v2.Configuration;
 import com.xilixir.fortniteapi.v2.Credentials;
 import com.xilixir.fortniteapi.v2.Epic.EpicLookup;
@@ -19,11 +21,11 @@ public class Example {
             e.printStackTrace();
         }
         try {
-            EpicLookup lookup = api.getUserInfo("xilixir");
+            EpicLookup lookup = api.getUserInfo("MillerTiime");
             Stats stats = api.getStats(lookup.getId());
-//            Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-//            System.out.println(gson.toJson(lookup));
-//            System.out.println(gson.toJson(stats));
+            Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+            System.out.println(gson.toJson(lookup));
+            System.out.println(gson.toJson(stats));
         } catch (IOException e) {
             e.printStackTrace();
         }

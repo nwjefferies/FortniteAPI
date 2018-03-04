@@ -12,13 +12,21 @@ import com.xilixir.fortniteapi.v2.Epic.EpicAuthorizationExchange;
 import com.xilixir.fortniteapi.v2.Epic.EpicLookup;
 import com.xilixir.fortniteapi.v2.Epic.EpicStat;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+enum Platform{PC,PS4,XB1,NONE};
 
 public class FortniteAPI {
     private HttpRequestFactory factory;
@@ -109,17 +117,52 @@ public class FortniteAPI {
 
         // convert multiple EpicStat objects into one Stats object
         String json = request.execute().parseAsString();
+        
+        //write to file
+//        BufferedWriter out = new BufferedWriter(new FileWriter("output.json"));
+//        out.write(json);
+//        out.close();
+        
+        
         EpicStat[] rawStats = new Gson().fromJson(json, new TypeToken<EpicStat[]>() {
         }.getType());
         StringBuilder str = new StringBuilder();
+        
+        Platform platform = Platform.NONE;
+        
         for (EpicStat s : rawStats) {
+        	if(platform == Platform.NONE) {
+        		if(s.getName().contains("ps4")) {
+        			platform = Platform.PS4;
+        		}
+        		else if (s.getName().contains("xb1")){
+        			platform = Platform.XB1;
+        		}
+        		else if (s.getName().contains("pc")){
+        			platform = Platform.PC;
+        		}
+        	}
             str.append(",\"").append(s.getName()).append("\":").append(s.getValue());
         }
         String jsonStats = "{" + str.toString().substring(1) + "}";
-        Stats stats = new Gson().fromJson(jsonStats, Stats.class);
-        stats.calculate();
-        log("Got stats for id '" + userId + "'");
-        return stats;
+        
+        if(platform != Platform.NONE) {
+        	Stats stats = null;
+        	
+        	if(platform == Platform.PC) {
+        		stats = new Gson().fromJson(jsonStats, PCStats.class);
+        	}
+        	else if(platform == Platform.PS4) {
+        		stats = new Gson().fromJson(jsonStats, PS4Stats.class);
+        	}
+        	else if(platform == Platform.XB1) {
+        		stats = new Gson().fromJson(jsonStats, XB1Stats.class);
+        	}
+        	stats.calculate();
+        	log("Got stats for id '" + userId + "'");
+        	return stats;
+        }
+        return null;
     }
 
     public EpicLookup getUserInfo(String username) throws IOException {
