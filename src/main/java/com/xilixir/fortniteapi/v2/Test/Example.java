@@ -21,7 +21,7 @@ public class Example {
             e.printStackTrace();
         }
         try {
-            EpicLookup lookup = api.getUserInfo("<username>");
+            EpicLookup lookup = api.getUserInfo("frizmuffin");
             Stats stats = api.getStats(lookup.getId());
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
             System.out.println(gson.toJson(lookup));
