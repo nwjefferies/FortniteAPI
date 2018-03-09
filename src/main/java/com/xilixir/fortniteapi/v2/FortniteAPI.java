@@ -144,6 +144,9 @@ public class FortniteAPI {
         	}
             str.append(",\"").append(s.getName()).append("\":").append(s.getValue());
         }
+        if(str.toString().length() < 1) {
+        	throw new IOException();
+        }
         String jsonStats = "{" + str.toString().substring(1) + "}";
         
         if(platform != Platform.NONE) {

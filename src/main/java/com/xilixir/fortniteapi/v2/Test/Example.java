@@ -21,12 +21,13 @@ public class Example {
             e.printStackTrace();
         }
         try {
-            EpicLookup lookup = api.getUserInfo("frizmuffin");
+            EpicLookup lookup = api.getUserInfo("SteelBree");
             Stats stats = api.getStats(lookup.getId());
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
             System.out.println(gson.toJson(lookup));
             System.out.println(gson.toJson(stats));
         } catch (IOException e) {
+        	System.out.println("Player not found");
             e.printStackTrace();
         }
     }

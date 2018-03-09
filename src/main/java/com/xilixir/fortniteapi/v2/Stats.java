@@ -9,9 +9,9 @@ public abstract class Stats {
     private double duoWinRatio;
     private double squadWinRatio;
     private double soloKillsPerMinute;
+    private double duoKillsPerMinute;
     private double squadKillsPerMinute;
     private double soloKillsPerMatch;
-    private double duoKillsPerMinute;
     private double duoKillsPerMatch;
     private double squadKillsPerMatch;
     private double totalMatchesPlayed;
