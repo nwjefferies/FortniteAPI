@@ -23,7 +23,7 @@ public abstract class Stats {
     private double totalWinRatio;
     private double totalKillsPerMinute;
     private double totalKillsPerMatch;
-	
+
 	// calculate stats
 	void calculate(){
         // kills/death
@@ -62,7 +62,7 @@ public abstract class Stats {
         this.totalKillsPerMinute = this.totalKills/(this.totalMinutesPlayed > 0 ? this.totalMinutesPlayed : 1);
         this.totalKillsPerMatch = this.totalKills/(this.totalMatchesPlayed > 0 ? this.totalMatchesPlayed : 1);
     }
-	
+
 	public double getSoloKillDeathRatio() {
         return soloKillDeathRatio;
     }
@@ -146,7 +146,7 @@ public abstract class Stats {
     public double getTotalKillsPerMatch() {
         return totalKillsPerMatch;
     }
-	
+
     public abstract double getSoloScore();
     public abstract double getDuoScore();
     public abstract double getSquadScore();

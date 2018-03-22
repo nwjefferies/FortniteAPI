@@ -11,6 +11,9 @@ import com.xilixir.fortniteapi.v2.Epic.EpicAuthorization;
 import com.xilixir.fortniteapi.v2.Epic.EpicAuthorizationExchange;
 import com.xilixir.fortniteapi.v2.Epic.EpicLookup;
 import com.xilixir.fortniteapi.v2.Epic.EpicStat;
+import com.xilixir.fortniteapi.v2.Epic.Store.BRStore;
+import com.xilixir.fortniteapi.v2.Epic.Store.Catalog;
+import com.xilixir.fortniteapi.v2.Epic.Store.Storefront;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -166,6 +169,34 @@ public class FortniteAPI {
         	return stats;
         }
         return null;
+    }
+
+    public Catalog getAllStoreItems() throws IOException {
+        // request
+        GenericUrl url = new GenericUrl("https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/storefront/v2/catalog?rvn=5479");
+        HttpRequest request = factory.buildGetRequest(url);
+
+        // headers
+        request.getHeaders().setAuthorization("bearer " + this.auth.getAccessToken());
+
+        String json = request.execute().parseAsString();
+        Catalog catalog = new Gson().fromJson(json, Catalog.class);
+        log("Retrieved catalog info");
+        return catalog;
+    }
+
+    public BRStore getBRStoreItems() throws IOException {
+        Catalog catalog = getAllStoreItems();
+        Storefront brDaily = null, brWeekly = null;
+        for (Storefront sf : catalog.getStorefronts()){
+            String sfName = sf.getName();
+            if (sfName.equals("BRWeeklyStorefront")){
+                brWeekly = sf;
+            } else if (sfName.equals("BRDailyStorefront")){
+                brDaily = sf;
+            }
+        }
+        return new BRStore(brWeekly, brDaily);
     }
 
     public EpicLookup getUserInfo(String username) throws IOException {
