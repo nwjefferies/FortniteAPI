@@ -15,7 +15,7 @@ public abstract class Stats {
     private double duoKillsPerMatch;
     private double squadKillsPerMatch;
     private double totalMatchesPlayed;
-    private double totalLastModified;
+    private long totalLastModified;
     private double totalWins;
     private double totalMinutesPlayed;
     private double totalKills;
@@ -171,4 +171,5 @@ public abstract class Stats {
     public abstract double getDuoTop5();
     public abstract double getSoloTop25();
     public abstract double getSoloTop10();
+
 }

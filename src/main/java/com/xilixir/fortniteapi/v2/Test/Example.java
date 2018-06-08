@@ -24,7 +24,7 @@ public class Example {
         try {
             BRStore storeInfo = api.getBRStoreItems();
 
-            EpicLookup lookup = api.getUserInfo("username");
+            EpicLookup lookup = api.getUserInfo("asdfasdfasdfasd");
             Stats stats = api.getStats(lookup.getId());
             Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
             System.out.println(gson.toJson(lookup));

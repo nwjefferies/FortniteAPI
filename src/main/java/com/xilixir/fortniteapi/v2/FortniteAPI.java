@@ -134,17 +134,6 @@ public class FortniteAPI {
         Platform platform = Platform.NONE;
         
         for (EpicStat s : rawStats) {
-        	if(platform == Platform.NONE) {
-        		if(s.getName().contains("ps4")) {
-        			platform = Platform.PS4;
-        		}
-        		else if (s.getName().contains("xb1")){
-        			platform = Platform.XB1;
-        		}
-        		else if (s.getName().contains("pc")){
-        			platform = Platform.PC;
-        		}
-        	}
             str.append(",\"").append(s.getName()).append("\":").append(s.getValue());
         }
         if(str.toString().length() < 1) {
@@ -152,23 +141,16 @@ public class FortniteAPI {
         }
         String jsonStats = "{" + str.toString().substring(1) + "}";
         
-        if(platform != Platform.NONE) {
-        	Stats stats = null;
-        	
-        	if(platform == Platform.PC) {
-        		stats = new Gson().fromJson(jsonStats, PCStats.class);
-        	}
-        	else if(platform == Platform.PS4) {
-        		stats = new Gson().fromJson(jsonStats, PS4Stats.class);
-        	}
-        	else if(platform == Platform.XB1) {
-        		stats = new Gson().fromJson(jsonStats, XB1Stats.class);
-        	}
-        	stats.calculate();
-        	log("Got stats for id '" + userId + "'");
-        	return stats;
-        }
-        return null;
+
+        PCStats pcStats = new Gson().fromJson(jsonStats, PCStats.class);
+        PS4Stats ps4Stats = new Gson().fromJson(jsonStats, PS4Stats.class);
+        XB1Stats xb1Stats = new Gson().fromJson(jsonStats, XB1Stats.class);
+
+        Stats totalStats = new TotalStats(pcStats, ps4Stats, xb1Stats);
+        totalStats.calculate();
+        log("Got stats for id '" + userId + "'");
+        return totalStats;
+
     }
 
     public Catalog getAllStoreItems() throws IOException {
